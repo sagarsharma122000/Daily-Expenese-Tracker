@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+<!--    <script type="text/javascript" src="./lib/jquery-3.3.1.min.js"></script>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+<!--  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="project.css">
+<!--jQuery-->
+    <script>
+
+$(document).ready(function() {
+  //Variable declarations that use or refer to jquery should be INSIDE the ready function to make sure jquery is instanciated.
+  $name = $('input[name="item-name"'); //notice the different declaration…
+  $amount = $('input[name="amount"');
+  $type = $('select[name="type"');
+  $date = $('input[name="date"');
+
+  var formatDate = function(d) {
+    //2014-07-09
+    var d = d.split("-"); //Since we know the value comes yyyy-mm-dd…
+
+    var dt = new Date(d[0], d[1], d[2]); //Note: The month is off by +1 - for JS Date object,
+
+    var formattedDate = "";
+
+    var months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ]; //Now we can get the month like this:
+
+    formattedDate += months[dt.getMonth() - 1]; 
+
+    var formattedDay; 
+
+    switch (d[2].substring(1)) { 
+      case "1":
+        formattedDay = parseInt(d[2]) + "st"; 
+        break;
+      case "2":
+        formattedDay = parseInt(d[2]) + "nd"; 
+        break;
+      case "3":
+        formattedDay = parseInt(d[2]) + "rd"; 
+        break;
+      default:
+        formattedDay = parseInt(d[2]) + "th";
+    }
+   
+    formattedDate += " " + formattedDay;
+    
+    return formattedDate;
+  };
+
+  
+
+  $("#button").click(function() {
+    
+    var type_icon; 
+    if ($type.val() == "card") {
+      type_icon = "<i class='fa fa-credit-card'>";
+    } else if ($type.val() == "cash") {
+      type_icon = "<i class='fas fa-rupee-sign'></i>";
+    } else if ($type.val() == "wallet") {
+      type_icon = "<i class='fab fa-google-wallet'></i>";
+    } else if ($type.val() == "other") {
+      type_icon = "<i class='fa fa-question-circle'></i>";
+    }
+
+    var form_validated = true;
+    
+    if (form_validated) {
+     
+      $("table tr:first").after(
+        "<tr><td>" +
+          type_icon +
+          "</td><td>" +
+          $name.val() +
+          "</td><td>" +
+          formatDate($date.val()) +
+          '</td><td class="amount">Rs.' +
+          $amount.val() +
+          "</td></tr>"
+      );
+      $date.val(null);
+      $amount.val(null);
+      $name.val(null);
+      $("#if-empty").remove();
+    }
+  });
+});
+    </script>
+
+</head>
+
+<h1> Daily Expense Tracker</h1>
+<h2 style="margin-top: 100px">Add a new item:</h2>
+
+<div id="form-box">
+<form>
+  <div>
+    <span style="color: #75787A ">Type:</span> 
+      <select name="type">
+          <option value="card">Card</option>
+          <option value="cash">Cash</option>
+          <option value="wallet">Google-Wallet</option>
+          <option value="other">Other</option>
+      </select>
+  </div>
+  
+  <div>
+    <span style="color: #75787A ">Name:</span> <input type="text" name="item-name" placeholder="What did you spend on?">
+  </div>
+  
+  <div>
+    <span style="color: #75787A ">Date:</span> <input type="date" name="date">
+  </div>
+  
+  <div>
+    <span style="color: #75787A ">Amount:</span> <input type="number" name="amount" placeholder="How much?">
+  </div>
+  
+</form>
+</div>
+
+<div id="button"><span>Add a new expense</span></div>
+
+<table>
+  <tr>
+    <th id="type" class="center">Type</th>
+    <th>Name</th>
+    <th id="date">Date</th>
+    <th style="text-align: right" id="amount">Amount</th>
+  </tr>
+  <tr id="if-empty">
+    <td colspan="4"><span>Your added items will show up here!</span></td>
+  </tr>
+
+</table>
+
+
+
+	<body>
+
+</body>
+</html>
